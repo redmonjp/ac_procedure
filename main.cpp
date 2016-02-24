@@ -17,7 +17,7 @@ int main(int argc, const char * argv[]) {
     stringstream convert;
     ifstream read_file(argv[1]);
     string graph_str;
-    vector<vector<bool>> membership_array;
+    vector<vector<bool> > membership_array;
     
     //read the graph description file
     if (read_file){

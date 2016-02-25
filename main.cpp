@@ -11,23 +11,23 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
     int j=0;
     int k=0;
     int l=0;
+    int z=0;
     int start=0;
-    int x=NULL;
-    int y=NULL;
+    int x=0;
+    int y=0;
     int num_of_verticies=0;
-    int length_of_file=0;
-    char ch=NULL;
+    int num_of_tuples=0;
+    vector<string>pairs;
     ifstream read_file(argv[1]);
     stringstream convert;
     string graph_str;
     
     //read the graph description file
+    //push it back onto a vector
     if (read_file){
-        read_file.get(ch);
         while (!read_file.eof()) {
-            graph_str.insert(i,1,ch);
-            i++;
-            read_file.get(ch);
+            getline (read_file,graph_str);
+            pairs.push_back(graph_str);
         }
     }
     else{
@@ -35,46 +35,38 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
         read_file.close();
         exit(1);
     }
-    graph_str.insert(i,1,'\n');
-    
-    //lets start to parse this string
-    //get the length of the string
-    //set the pointer to the start
-    length_of_file = i+1;
-    i=0;
-    
-    while (graph_str.at(j)!= '\n') {
-        j++;
-        graph_str.at(j);
-    }
     
     //get the string that represents the number of verticies
     //stuff it into an int
-    convert<<graph_str.substr(i,j-i);
+    convert<<pairs.at(z);
     convert>>num_of_verticies;
     convert.clear();
     cout<<"Number of verticies: "<<num_of_verticies<<endl;
     
     //resize the array to match the number of verticies and set it all to false
     membership_array.resize(num_of_verticies+1, vector<bool>(num_of_verticies+1, false));
+    num_of_tuples = (int)pairs.size();
     
     //as long as we still have tuples
-    while (i <= length_of_file) {
-        //if we are close to the end - break
-        if (i+2 >= length_of_file||i>= length_of_file) {
+    //z is the index into the vector holding tuples
+    //increment to get the next tuple and loop until we are at the end
+    while (true) {
+        //get the next tuple
+        z++;
+        i=0;
+        //check to see if we are at the end 'z+1' to account for zero index
+        if (z+1 >= num_of_tuples) {
             break;
         }
+        //take the tuple and put it into a sting to work with
+        graph_str = pairs.at(z);
         //move past new lines and brackets
-        if (graph_str.at(i) == '\n') {
+        if(graph_str.at(i) == '{') {
             i++;
         }
-        while (graph_str.at(i) != '{') {
-            i++;
-        }
-        i++;
         j=i;
         start=i;
-        while (graph_str.at(i) != '}'&&graph_str.at(i) != '\n') {
+        while (graph_str.at(i) != '}') {
             //check to see if we are sitting on a comma
             if (graph_str.at(i) == ',') {
                 i++;
@@ -91,8 +83,6 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
             convert.clear();
             //since k was incremented to the end - bring i to k
             i=k;
-            //then move to the next spot
-            i++;
             //set j to the start of the {}
             j=start;
             while (graph_str.at(j) != '}'&&graph_str.at(j) != '\n') {
@@ -106,6 +96,16 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
                 convert<<graph_str.substr(j,l-j);
                 convert>>y;
                 convert.clear();
+                //check to make sure these places exist
+                if (x>num_of_verticies) {
+                    cout<<"The value "<<x<<" for x is invalid"<<endl;
+                    cout<<"Check the graph description file for errors"<<endl;
+                    exit(1);
+                }
+                if (y>num_of_verticies) {
+                    cout<<"The value "<<y<<" for y is invalid"<<endl;
+                    cout<<"Check the graph description file for errors"<<endl;
+                }
                 //add it to the membership
                 membership_array[x][y] = true;
                 //since l was incremented to the end - bring j to l

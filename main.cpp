@@ -3,11 +3,12 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
 //read in the included file and parse it into data structures
-void read_file(vector< vector<bool> > &membership_array, int argc, const char *argv[]){
+void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edge_vector, vector< pair<int, int> > &primal_edge_vector, int argc, const char *argv[]){
     int i=0;
     int j=0;
     int k=0;
@@ -18,6 +19,9 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
     int y=0;
     int num_of_verticies=0;
     int num_of_tuples=0;
+    bool pair_exists = false;
+    set<int>edge;
+    pair<int, int>primal_edge_pair;
     vector<string>pairs;
     ifstream read_file(argv[1]);
     stringstream convert;
@@ -42,7 +46,7 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
     convert<<pairs.at(z);
     convert>>num_of_verticies;
     convert.clear();
-    cout<<"Number of verticies: "<<num_of_verticies<<endl;
+    //cout<<endl<<"Number of verticies: "<<num_of_verticies<<endl;
     
     //resize the array to match the number of verticies and set it all to false
     membership_array.resize(num_of_verticies+1, vector<bool>(num_of_verticies+1, false));
@@ -78,7 +82,7 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
             while (graph_str.at(k)!=','&&graph_str.at(k)!='}') {
                 k++;
             }
-            //make a substing of the number
+            //make a substring of the number
             convert<<graph_str.substr(i,k-i);
             convert>>x;
             convert.clear();
@@ -87,6 +91,8 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
             //set j to the start of the {}
             j=start;
             while (graph_str.at(j) != '}'&&graph_str.at(j) != '\n') {
+                //reset our flag
+                pair_exists = false;
                 //set everything to the start of {}
                 l=j;
                 //move past the comma
@@ -106,9 +112,29 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
                 if (y>num_of_verticies) {
                     cout<<"The value "<<y<<" for y is invalid"<<endl;
                     cout<<"Check the graph description file for errors"<<endl;
+                    exit(1);
                 }
-                //add it to the membership
-                membership_array[x][y] = true;
+                //check to see if the values are the same
+                //if they are then dont add the pair to keep out loops
+                //else add it
+                if (x != y) {
+                    membership_array[x][y] = true;
+                    //insert each value into the edge - if it is already there is wont show up
+                    edge.insert(x);
+                    edge.insert(y);
+                    
+                    //check to make sure the (x,y) and (y,x) never show up
+                    for (int q=0 ; q<primal_edge_vector.size(); q++) {
+                        if (membership_array[y][x] == true) {
+                            pair_exists = true;
+                        }
+                    }
+                    //if (y,x) is not in the membership array then put it in as an edge
+                    if (!pair_exists) {
+                        primal_edge_pair = make_pair(x, y);
+                        primal_edge_vector.push_back(primal_edge_pair);
+                    }
+                }
                 //since l was incremented to the end - bring j to l
                 j=l;
                 if (graph_str.at(j) == ',') {
@@ -116,11 +142,17 @@ void read_file(vector< vector<bool> > &membership_array, int argc, const char *a
                 }
             }
         }
+        //before we start the next iteration push the new edge onto the vector
+        edge_vector.push_back(edge);
+        //empty the edge for the next loop
+        edge.clear();
     }
 }
 
 //nested for loops to print the membership array
 void print_matrix(vector< vector<bool> > &membership_array){
+    
+    cout<<"Membership Array:";
     for (int i = 1; i < membership_array.size(); i++){
         cout<<endl;
         for (int j = 1; j < membership_array.size(); j++){
@@ -130,12 +162,55 @@ void print_matrix(vector< vector<bool> > &membership_array){
     cout<<"\n"<<endl;
 }
 
+//nested for loops to print the hyperedges
+void print_edge_vector(vector< set<int> > &edge_vector){
+    set<int>::iterator it;
+    set<int>edge;
+    
+    cout<<"Hyperedges"<<endl;
+    //print the hyperedges we found!
+    for (int i=0; i<edge_vector.size(); i++) {
+        edge = edge_vector.at(i);
+        cout<<"{";
+        for (it=edge.begin(); it!=edge.end(); ++it){
+            if (it != edge.begin()){
+                cout << ",";
+            }
+            cout<<*it;
+        }
+        cout<<"}"<<endl;
+    }
+}
+
+//nested for loops to print the primal edges of the membership array
+void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
+    pair<int, int>pair;
+    
+    cout<<"Primal Edges:"<<endl;
+    //print the hyperedges we found!
+    for (int i=0; i<primal_edge_vector.size(); i++) {
+        pair = primal_edge_vector.at(i);
+        cout<<"{";
+        cout<<pair.first <<","<<pair.second;
+        cout<<"}"<<endl;
+    }
+    cout<<endl;
+}
+
 int main(int argc, const char * argv[]) {
+    //vector that will hold the edges in the hypergraph
+    vector<set<int>>edge_vector;
+    //vector to hold the pairs of the primal graph
+    vector<pair<int, int>>primal_edge_vector;
     //the 2d vector that will be used to hold the membership array of the graph
     vector<vector<bool> > membership_array;
     
     //call read_file - read in the description file and update membership array
-    read_file(membership_array, argc, argv);
+    read_file(membership_array, edge_vector, primal_edge_vector, argc, argv);
     //call print_matrix - print the membership array in matrix form
     print_matrix(membership_array);
+    //call print_primal_edge_vector - print the vector containing the edges in the primal graph
+    print_primal_edge_vector(primal_edge_vector);
+    //call print_edge_vector - print the vector containing each hyperedge line by line
+    print_edge_vector(edge_vector);
 }

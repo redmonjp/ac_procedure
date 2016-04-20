@@ -12,8 +12,6 @@ void createSetofVertices(int numVertices, vector<int> &vertices){
 	}	
 }
 
-
-
 int getPivot(vector < pair <int,int> > &edges, vector <int> U,vector <int> P){
 	int u;
 	int highest_num_neighbors=0;

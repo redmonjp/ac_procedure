@@ -10,9 +10,9 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     //vector that will hold the edges in the hypergraph
-    vector<set<int>>edge_vector;
+    vector<set<int> >edge_vector;
     //vector to hold the pairs of the primal graph
-    vector<pair<int, int>>primal_edge_vector;
+    vector<pair<int, int> >primal_edge_vector;
     //the 2d vector that will be used to hold the membership array of the graph
     vector<vector<bool> > membership_array;
     

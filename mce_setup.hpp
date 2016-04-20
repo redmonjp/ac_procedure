@@ -1,14 +1,6 @@
-//
-//  mce_setup.hpp
-//  ac_procedure
-//
-//  Created by Jack Redmond on 4/20/16.
-//
-//
 #ifndef mce_setup_h
 #define mce_setup_h
 
-#include "mce_setup.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -207,6 +199,5 @@ void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
     }
     cout<<endl;
 }
-
 
 #endif /* mce_setup_h */

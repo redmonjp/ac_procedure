@@ -1,6 +1,7 @@
 #ifndef mce_setup_h
 #define mce_setup_h
 
+#include "bk.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -10,8 +11,35 @@
 
 using namespace std;
 
+/**************************************************************
+ Function: read_file
+ Description: This function is used to read in a user provided
+ file that will be passed in argv[1]. The function expects the 
+ file to be laid out in a manner that the first line is the 
+ number of vertices in graph and every line after that is an 
+ edge in the graph. The function reads the given file in, 
+ line by line, and then pushes each line onto the pairs vector.
+ The first element of the vector is popped off and used to create
+ the size of the membership_array.
+ 
+ 
+ Dictionary of Variables:
+ user_input_edges-
+ type: vector <vector <int> >
+ Description: input to function, contains edges given by user in
+ initial input.
+ bk_cstructure-
+ type: vector <vector <int> >
+ Description:input to function, actual c-structure a user may want
+ to compare their input to.
+ is_cstructure-
+ type: boolean
+ Description: Intialized to false, stays false if vectors input
+ by user are different, changes to true if they are the same.
+ *********************************************************************/
+
 //read in the included file and parse it into data structures
-void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edge_vector, vector< pair<int, int> > &primal_edge_vector, int argc, const char *argv[]){
+void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edge_vector, vector< pair<int, int> > &primal_edge_vector, vector<int>&vertices, int argc, const char *argv[]){
     int i=0;
     int j=0;
     int k=0;
@@ -51,6 +79,9 @@ void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edg
     convert.clear();
     //cout<<endl<<"Number of verticies: "<<num_of_verticies<<endl;
     
+    //Call CreateSetofVertices from bk.hpp
+    CreateSetofVertices(num_of_verticies, vertices);
+
     //resize the array to match the number of verticies and set it all to false
     membership_array.resize(num_of_verticies+1, vector<bool>(num_of_verticies+1, false));
     num_of_tuples = (int)pairs.size();

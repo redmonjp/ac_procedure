@@ -15,9 +15,11 @@ int main(int argc, const char * argv[]) {
     vector<pair<int, int> >primal_edge_vector;
     //the 2d vector that will be used to hold the membership array of the graph
     vector<vector<bool> > membership_array;
+    //vector to hold vertices
+    vector<int> vertices;
     
     //call read_file - read in the description file and update membership array
-    read_file(membership_array, edge_vector, primal_edge_vector, argc, argv);
+    read_file(membership_array, edge_vector, primal_edge_vector, vertices, argc, argv);
     //call print_matrix - print the membership array in matrix form
     print_matrix(membership_array);
     //call print_primal_edge_vector - print the vector containing the edges in the primal graph

@@ -39,7 +39,7 @@ using namespace std;
  *********************************************************************/
 
 //read in the included file and parse it into data structures
-void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edge_vector, vector< pair<int, int> > &primal_edge_vector, vector<int>&vertices, int argc, const char *argv[]){
+void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &edge_vector, vector< pair<int, int> > &primal_edge_vector, vector<int>&vertices, int argc, const char *argv[]){
     int i=0;
     int j=0;
     int k=0;
@@ -51,7 +51,7 @@ void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edg
     int num_of_verticies=0;
     int num_of_tuples=0;
     bool pair_exists = false;
-    set<int>edge;
+    vector<int>edge;
     pair<int, int>primal_edge_pair;
     vector<string>pairs;
     ifstream read_file(argv[1]);
@@ -154,8 +154,8 @@ void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edg
                 if (x != y) {
                     membership_array[x][y] = true;
                     //insert each value into the edge - if it is already there is wont show up
-                    edge.insert(x);
-                    edge.insert(y);
+                    edge.push_back(x);
+                    edge.push_back(y);
                     
                     //check to make sure the (x,y) and (y,x) never show up
                     for (int q=0 ; q<primal_edge_vector.size(); q++) {
@@ -176,7 +176,9 @@ void read_file(vector< vector<bool> > &membership_array, vector< set<int> > &edg
                 }
             }
         }
-        //before we start the next iteration push the new edge onto the vector
+        sort( edge.begin(), edge.end() );
+        edge.erase( unique( edge.begin(), edge.end() ), edge.end() ); 
+       //before we start the next iteration push the new edge onto the vector
         edge_vector.push_back(edge);
         //empty the edge for the next loop
         edge.clear();
@@ -197,14 +199,14 @@ void print_matrix(vector< vector<bool> > &membership_array){
 }
 
 //nested for loops to print the hyperedges
-void print_edge_vector(vector< set<int> > &edge_vector){
-    set<int>::iterator it;
-    set<int>edge;
+void print_edge_vector(vector< vector<int> > &edge_vector){
+    vector<int>::iterator it;
+    vector<int>edge;
     
     cout<<"Hyperedges"<<endl;
     //print the hyperedges we found!
     for (int i=0; i<edge_vector.size(); i++) {
-        edge = edge_vector.at(i);
+        edge = edge_vector[i];
         cout<<"{";
         for (it=edge.begin(); it!=edge.end(); ++it){
             if (it != edge.begin()){

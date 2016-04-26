@@ -139,7 +139,13 @@ Dictionary of Variables:
 bool CheckCStructure(vector < vector <int> > user_input_edges, vector < vector <int> > bk_cstructure) 
 {
 	bool is_cstructure = false; //is the user input a c structure?
+	for(int i=0; i<user_input_edges.size();i++){
+		sort(user_input_edges[i].begin(), user_input_edges[i].end());//sort the user input data
+	}
 	sort(user_input_edges.begin(), user_input_edges.end());//sort the user input data
+	for(int k=0; k<bk_cstructure.size();k++){
+		sort(bk_cstructure[k].begin(), bk_cstructure[k].end());//sort the actual c-structure
+	}
 	sort(bk_cstructure.begin(), bk_cstructure.end());//sort the actual c structure vector
 	//If the two vectors are the same
 	if(user_input_edges == bk_cstructure){

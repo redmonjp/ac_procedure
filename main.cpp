@@ -28,15 +28,11 @@ int main(int argc, const char * argv[]) {
     print_primal_edge_vector(primal_edge_vector);
     //call print_edge_vector - print the vector containing each hyperedge line by line
     print_edge_vector(edge_vector);
-    cout<<"Maximal Cliques in graph: "<<endl;
+    //get all the maximal cliques for the given graph
     GetAllMaxCliques(primal_edge_vector, maximal_cliques, R,vertices, X );
-    for(int j=0;j<maximal_cliques.size();j++){
-	cout<<"{";
-	for(int i=0;i<maximal_cliques[j].size();i++){
-		cout<<maximal_cliques[j][i]<<" ";
-	}
-	cout<<"}"<<endl;
-    }
+    //check to see if they are the same
     bool same_cstructure = CheckCStructure(edge_vector, maximal_cliques);
+    //print maximal cliques
+    print_maximal_cliques(maximal_cliques);
 	cout<<same_cstructure<<endl;
 }

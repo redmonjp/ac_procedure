@@ -136,10 +136,11 @@ Dictionary of Variables:
     Description: Intialized to false, stays false if vectors input 
     by user are different, changes to true if they are the same.
 *********************************************************************/
-bool CheckCStructure(vector < vector <int> > user_input_edges, vector < vector <int> > bk_cstructure) 
+bool CheckCStructure(vector < vector <int> > &user_input_edges, vector < vector <int> > &bk_cstructure)
 {
 	bool is_cstructure = false; //is the user input a c structure?
-	for(int i=0; i<user_input_edges.size();i++){
+	
+    for(int i=0; i<user_input_edges.size();i++){
 		sort(user_input_edges[i].begin(), user_input_edges[i].end());//sort the user input data
 	}
 	sort(user_input_edges.begin(), user_input_edges.end());//sort the user input data

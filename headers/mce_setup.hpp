@@ -169,6 +169,10 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
                         primal_edge_vector.push_back(primal_edge_pair);
                     }
                 }
+                else if (x ==y){
+                    edge.push_back(x);
+                    edge.push_back(y);
+                }
                 //since l was incremented to the end - bring j to l
                 j=l;
                 if (graph_str.at(j) == ',') {
@@ -233,4 +237,23 @@ void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
     cout<<endl;
 }
 
+//nested for loops to print the hyperedges
+void print_maximal_cliques(vector< vector<int> > &maximal_cliques){
+    vector<int>::iterator it;
+    vector<int>edge;
+    
+    cout<<endl<<"Maximal Cliques in Graph"<<endl;
+    //print the hyperedges we found!
+    for (int i=0; i<maximal_cliques.size(); i++) {
+        edge = maximal_cliques[i];
+        cout<<"{";
+        for (it=edge.begin(); it!=edge.end(); ++it){
+            if (it != edge.begin()){
+                cout << ",";
+            }
+            cout<<*it;
+        }
+        cout<<"}"<<endl;
+    }
+}
 #endif /* mce_setup_h */

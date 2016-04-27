@@ -126,12 +126,16 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                 cout<<"'"<<endl;
                 //sort the final edge for use with includes
                 sort(final_edge.begin(), final_edge.end());
+                //
+                int z=0;
                 //check to see if any of the old edges are a subset of the new edge
                 for (int k=0; k<maximal_cliques.size(); k++) {
                     //local loop clique
                     clique = maximal_cliques.at(k);
                     //if there is an edge that is the subset of our new edge - exclude it
                     if (includes(final_edge.begin(), final_edge.end(), clique.begin(), clique.end())) {
+                        //increment i each time we are going to erase something
+                        //when we erase an element it needs to be accounted for
                         cout<<"The edge '";
                         print_clique(clique);
                         cout<<"' is a subset of '";
@@ -141,14 +145,16 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                         //erase the corresponding element in aggregates from the original maximal
                         //cliques - this is just so that we can display the new aggregates and not
                         //disturb the flow for the next cycle of the loop
-                        aggregates.erase(aggregates.begin()+k);
+                        //subtract i from our index - this accounts for erasing elements
+                        aggregates.erase(aggregates.begin()+(k-z));
+                        z++;
                     }
                 }
                 //push the new edge onto the set of maximal cliques
                 aggregates.push_back(final_edge);
                 //print out the aggregates for adding in the edge
                 cout<<"The new aggregate set of maximal cliques when adding in the edge {";
-                cout<<new_edge.first<<","<<new_edge.second<<"} is - ";
+                cout<<new_edge.first<<","<<new_edge.second<<"} results in - ";
                 print_maximal_cliques(aggregates);
                 //remove the edge that we added so we can start fresh on the next loop
                 membership_array[new_edge.first][new_edge.second] = false;

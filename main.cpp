@@ -1,4 +1,5 @@
 #include "headers/mce_setup.hpp"
+#include "headers/ac.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -35,4 +36,7 @@ int main(int argc, const char * argv[]) {
     //print maximal cliques
     print_maximal_cliques(maximal_cliques);
 	cout<<same_cstructure<<endl;
+    //call the ac_procedure
+    ac_procedure(primal_edge_vector, maximal_cliques, membership_array);
+    
 }

@@ -192,14 +192,14 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
 //nested for loops to print the membership array
 void print_matrix(vector< vector<bool> > &membership_array){
     
-    cout<<"Membership Array:";
+    cout<<endl<<"Membership Array:";
     for (int i = 1; i < membership_array.size(); i++){
         cout<<endl;
         for (int j = 1; j < membership_array.size(); j++){
             cout << membership_array[i][j]<<" ";
         }
     }
-    cout<<"\n"<<endl;
+    cout<<endl;
 }
 
 //nested for loops to print the hyperedges
@@ -207,7 +207,7 @@ void print_edge_vector(vector< vector<int> > &edge_vector){
     vector<int>::iterator it;
     vector<int>edge;
     
-    cout<<"Hyperedges"<<endl;
+    cout<<endl<<"Hyperedges"<<endl;
     //print the hyperedges we found!
     for (int i=0; i<edge_vector.size(); i++) {
         edge = edge_vector[i];
@@ -226,7 +226,7 @@ void print_edge_vector(vector< vector<int> > &edge_vector){
 void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
     pair<int, int>pair;
     
-    cout<<"Primal Edges:"<<endl;
+    cout<<endl<<"Primal Edges:"<<endl;
     //print the hyperedges we found!
     for (int i=0; i<primal_edge_vector.size(); i++) {
         pair = primal_edge_vector.at(i);
@@ -234,7 +234,6 @@ void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
         cout<<pair.first <<","<<pair.second;
         cout<<"}"<<endl;
     }
-    cout<<endl;
 }
 
 //nested for loops to print the hyperedges

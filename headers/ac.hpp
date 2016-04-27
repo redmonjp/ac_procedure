@@ -11,6 +11,84 @@
 
 using namespace std;
 
+/**************************************************************
+ Function: ac_procedure
+ Description: This function is used to implement an instance of
+ the ac_procedure (adding an edge) as described by cavallo and 
+ klir. First we look for a valid place to add the edge - this is
+ done in the membership array. We are looking for a place that
+ is not already an edge, loop (x=y), or an edge who's inverse is
+ true ((y,x) = true). Then we need to see if the new pair interacts
+ with any of the old edges. This is done by taking the intersection 
+ of the new edge with each of the current cliques. If the edge 
+ interacts with any of the cliques then we put it in a buffer that
+ contains the intersection of every clique that the edge interacts 
+ with. Once we have checked every clique we union the new edge with 
+ the intersection of each clique to get the final edge we have been 
+ looking for. Once we have found the new clique we must check that
+ there are no other cliques that are a subset of the new. If there
+ are any cliques that are a subset of the new then they are excluded
+ from the aggregate. This process is then repeated for each valid 
+ edge in the graph.
+ 
+ Dictionary of Variables:
+ membership_array -
+ type: vector <vector <bool> >
+ Description: input to function, contains the matrix representation
+ of the graph description file - ie what edges are valid
+ maximal_cliques -
+ type: vector <vector <int> >
+ Description: input to function, contains a set of vectors of type 
+ int that represent the set of maximal cliques for the graph
+ iterations -
+ type: int
+ Description: local to function, keeps track of the number of edges
+ that we have been adding to the graph
+ new_edge -
+ type: pair<int,int>
+ Description: local to function, keeps track of each pair we have 
+ added into the graph 
+ clique -
+ type: vector<int>
+ Description: local to function - the clique from the full set of 
+ maximal cliques that we are working with
+ edge -
+ type: vector<int>
+ Description: local to function - the edge from the full set of 
+ edges that we are working with
+ final_edge -
+ type: vector<int>
+ Description: local to function - the vector that will hold the final
+ edge that we have found
+ buffer -
+ type: vector<int>
+ Description: local to function - this vector is used as swap space 
+ for the std functions like set_intersection, set_union, includes. 
+ it usually holds a copy of what is in final_edge or clique
+ aggregates -
+ type: vector<vector<int>>
+ Description: local to function - this 2d vector is a copy of the
+ maximal cliques that are given to this function - this is used to
+ add in the aggregate edges when they have been found - we do this 
+ as to not change the original set of cliques so they can be used in
+ the next iteration of the loop
+ membership_array_copy -
+ type: vector<vector<bool>>
+ Description: local to function - this 2d vector is a copy of the
+ membership_array that is given to this function. Everytime we add an
+ edge to the original membership_array we also add it to the copy. At
+ the end of the loop we reset the membership_array to what it was 
+ before we added the edge. However, one condition for a valid edge
+ is that the inverse is not a valid edge so we cross-refernce this
+ copy to make sure the condition is met. For example, if we add the 
+ point (1,2) to the memebership_array we then add it to the copy. At
+ The end of the loop (1,2) is removed from the original membership
+ array but the copy still contains the edge. When we get to edge
+ (2,1) we check the copy and find the the inverse, (1,2), has already
+ been tested and we determine that it is an invalid edge.
+ 
+*********************************************************************/
+
 //function that will find all immediate aggregates of a given c-structure
 void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > membership_array){
     //holds the number of points we have added so far

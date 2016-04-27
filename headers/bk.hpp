@@ -99,6 +99,8 @@ GetAllMaxCliques:
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <cstdlib>
+#include <iostream>
 
 using namespace std;
 
@@ -134,7 +136,7 @@ Dictionary of Variables:
     Description: Intialized to false, stays false if vectors input 
     by user are different, changes to true if they are the same.
 *********************************************************************/
-bool CheckCStructure(vector < vector <int> > &user_input_edges, vector < vector <int> > &bk_cstructure){
+bool CheckCStructure(vector < vector <int> > user_input_edges, vector < vector <int> > &bk_cstructure){
     bool is_cstructure = false; //is the user input a c structure?
     
     for(int i=0; i<user_input_edges.size();i++){
@@ -145,7 +147,7 @@ bool CheckCStructure(vector < vector <int> > &user_input_edges, vector < vector 
         sort(bk_cstructure[k].begin(), bk_cstructure[k].end());//sort the actual c-structure
     }
     sort(bk_cstructure.begin(), bk_cstructure.end());//sort the actual c structure vector
-    //If the two vectors are the same
+     //If the two vectors are the same
     if(user_input_edges == bk_cstructure){
         is_cstructure = true;
     } 

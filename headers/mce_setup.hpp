@@ -20,22 +20,64 @@ using namespace std;
  edge in the graph. The function reads the given file in,
  line by line, and then pushes each line onto the pairs vector.
  The first element of the vector is popped off and used to create
- the size of the membership_array.
- 
+ the size of the membership_array. From that point each edge in 
+ pairs vector is manipulated and packed into the correct data
+ structures
  
  Dictionary of Variables:
- user_input_edges-
+ membership_array-
+ type: vector <vector <bool> >
+ Description: input to function, contains the matrix representation
+ of the graph description file - ie what edges are valid
+ edge_vector-
  type: vector <vector <int> >
- Description: input to function, contains edges given by user in
- initial input.
- bk_cstructure-
- type: vector <vector <int> >
- Description:input to function, actual c-structure a user may want
- to compare their input to.
- is_cstructure-
- type: boolean
- Description: Intialized to false, stays false if vectors input
- by user are different, changes to true if they are the same.
+ Description:input to function, contains each edge that is descibed
+ in the graph description file
+ primal_edge_vector-
+ type:vector< pair<int, int> >
+ Description: input to function, contains the primal pairs of each edge
+ in the graph description file
+ vertices-
+ type:vector<int>
+ Description: input to function, contains the number of vertices 
+ i,j,k,l,z,start,x,y -
+ type:int 
+ Description: local to function, counters in some manner
+ num_of_vertices
+ type:int
+ Description: local to function, contains the int value of the number
+ of vertices described in the graph description file
+ num_of_tuples
+ type:int
+ Description: local to function, contains the int value of the number
+ of tuples (edges) described in the graph description file
+ pair_exists
+ type:bool
+ Description: local to function, tells weather the inverse of the pair
+ exists - prevents duplicates 
+ edge-
+ type:vector<int>
+ Description: local to function, contains the vector of the single edge
+ we are working with
+ primal_edge_pair
+ type:pair<int,int>
+ Description: local to function, contains the single pair we are working
+ with
+ pairs-
+ type:vector<string>
+ Description: local to function, contains the vector of each edge in the
+ file
+ readfile(argv[1])-
+ type:ifstream
+ Description: local to function, used to read in the file data
+ convert-
+ type:stringstream
+ Description: local to function, stringstream variable used as the 
+ buffer to convert 
+ graph_str-
+ type:str
+ Description: local to function, used to hold the single string that 
+ we are working with
  *********************************************************************/
 
 //read in the included file and parse it into data structures
@@ -48,9 +90,10 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
     int start=0;
     int x=0;
     int y=0;
-    int num_of_verticies=0;
+    int num_of_vertices=0;
     int num_of_tuples=0;
     bool pair_exists = false;
+    set<int>set_of_edge;
     vector<int>edge;
     pair<int, int>primal_edge_pair;
     vector<string>pairs;
@@ -58,6 +101,12 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
     stringstream convert;
     string graph_str;
     
+    //check the number of arguments - if the number is not correct then let 'em know
+    //and get out of here
+    if (argc != 2) {
+        cout<<"Incorrect number of arguments given to program"<<endl;
+        exit(1);
+    }
     //read the graph description file
     //push it back onto a vector
     if (read_file){
@@ -72,29 +121,30 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
         exit(1);
     }
     
-    //get the string that represents the number of verticies
+    //get the string that represents the number of vertices
     //stuff it into an int
     convert<<pairs.at(z);
-    convert>>num_of_verticies;
+    convert>>num_of_vertices;
     convert.clear();
-    //cout<<endl<<"Number of verticies: "<<num_of_verticies<<endl;
+    //cout<<endl<<"Number of vertices: "<<num_of_vertices<<endl;
     
     //Call CreateSetofVertices from bk.hpp
-    CreateSetofVertices(num_of_verticies, vertices);
+    CreateSetofVertices(num_of_vertices, vertices);
     
-    //resize the array to match the number of verticies and set it all to false
-    membership_array.resize(num_of_verticies+1, vector<bool>(num_of_verticies+1, false));
+    //resize the array to match the number of vertices and set it all to false
+    membership_array.resize(num_of_vertices+1, vector<bool>(num_of_vertices+1, false));
     num_of_tuples = (int)pairs.size();
     
     //as long as we still have tuples
     //z is the index into the vector holding tuples
     //increment to get the next tuple and loop until we are at the end
     while (true) {
+        set_of_edge.clear();
         //get the next tuple
         z++;
         i=0;
         //check to see if we are at the end 'z+1' to account for zero index
-        if (z+1 >= num_of_tuples) {
+        if (z>= num_of_tuples) {
             break;
         }
         //take the tuple and put it into a sting to work with
@@ -138,12 +188,12 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
                 convert>>y;
                 convert.clear();
                 //check to make sure these places exist
-                if (x>num_of_verticies) {
+                if (x>num_of_vertices) {
                     cout<<"The value "<<x<<" for x is invalid"<<endl;
                     cout<<"Check the graph description file for errors"<<endl;
                     exit(1);
                 }
-                if (y>num_of_verticies) {
+                if (y>num_of_vertices) {
                     cout<<"The value "<<y<<" for y is invalid"<<endl;
                     cout<<"Check the graph description file for errors"<<endl;
                     exit(1);
@@ -240,9 +290,6 @@ void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
 void print_maximal_cliques(vector< vector<int> > &maximal_cliques){
     vector<int>::iterator it;
     vector<int>edge;
-    
-    //sort the edges!
-    sort(maximal_cliques.begin(), maximal_cliques.end());
     
     cout<<endl<<"Maximal Cliques in Graph"<<endl;
     //print the hyperedges we found!

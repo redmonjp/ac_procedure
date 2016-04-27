@@ -216,7 +216,6 @@ Dictionary of Variables:
 *************************************************************/
 
 int GetPivot(vector < pair <int,int> > &edges, vector <int> U,vector <int> P){
-    int u;
     int highest_num_neighbors=0;
     int best_vertex;
     best_vertex = U[0];

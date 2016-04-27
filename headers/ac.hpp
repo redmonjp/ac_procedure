@@ -13,13 +13,18 @@ using namespace std;
 
 //function that will find all immediate aggregates of a given c-structure
 void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > membership_array){
+    //holds the number of points we have added so far
     int iterations = 0;
+    //single pair for holding the point we are working with
     pair<int,int>new_edge;
+    //holds the vector that is the local clique we are working with
     vector<int>clique;
+    //holds the vector that is the local edge we are working with
     vector<int>edge;
+    //holds the final edge that we are working on
     vector<int>final_edge;
+    //holds any misc data - copies and swaps
     vector<int>buffer;
-    vector<int>::iterator it;
     //hold aggregate data of new cliques
     vector< vector <int> > aggregates;
     //create a copy of the membership array

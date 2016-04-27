@@ -14,10 +14,10 @@ using namespace std;
 /**************************************************************
  Function: read_file
  Description: This function is used to read in a user provided
- file that will be passed in argv[1]. The function expects the 
- file to be laid out in a manner that the first line is the 
- number of vertices in graph and every line after that is an 
- edge in the graph. The function reads the given file in, 
+ file that will be passed in argv[1]. The function expects the
+ file to be laid out in a manner that the first line is the
+ number of vertices in graph and every line after that is an
+ edge in the graph. The function reads the given file in,
  line by line, and then pushes each line onto the pairs vector.
  The first element of the vector is popped off and used to create
  the size of the membership_array.
@@ -81,7 +81,7 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
     
     //Call CreateSetofVertices from bk.hpp
     CreateSetofVertices(num_of_verticies, vertices);
-
+    
     //resize the array to match the number of verticies and set it all to false
     membership_array.resize(num_of_verticies+1, vector<bool>(num_of_verticies+1, false));
     num_of_tuples = (int)pairs.size();
@@ -181,8 +181,8 @@ void read_file(vector< vector<bool> > &membership_array, vector< vector<int> > &
             }
         }
         sort( edge.begin(), edge.end() );
-        edge.erase( unique( edge.begin(), edge.end() ), edge.end() ); 
-       //before we start the next iteration push the new edge onto the vector
+        edge.erase( unique( edge.begin(), edge.end() ), edge.end() );
+        //before we start the next iteration push the new edge onto the vector
         edge_vector.push_back(edge);
         //empty the edge for the next loop
         edge.clear();
@@ -254,5 +254,19 @@ void print_maximal_cliques(vector< vector<int> > &maximal_cliques){
         }
         cout<<"}"<<endl;
     }
+}
+
+//nested for loops to print the hyperedges
+void print_clique(vector<int> clique){
+    vector<int>::iterator it;
+    
+    cout<<"{";
+    for (it=clique.begin(); it!=clique.end(); ++it){
+        if (it != clique.begin()){
+            cout << ",";
+        }
+        cout<<*it;
+    }
+    cout<<"}";
 }
 #endif /* mce_setup_h */

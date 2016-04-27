@@ -99,8 +99,6 @@ GetAllMaxCliques:
 #include <algorithm>
 #include <vector>
 #include <set>
-//#include <string>
-//#include <iostream>
 
 using namespace std;
 
@@ -136,25 +134,22 @@ Dictionary of Variables:
     Description: Intialized to false, stays false if vectors input 
     by user are different, changes to true if they are the same.
 *********************************************************************/
-bool CheckCStructure(vector < vector <int> > &user_input_edges, vector < vector <int> > &bk_cstructure)
-{
-	bool is_cstructure = false; //is the user input a c structure?
-	
+bool CheckCStructure(vector < vector <int> > &user_input_edges, vector < vector <int> > &bk_cstructure){
+    bool is_cstructure = false; //is the user input a c structure?
+    
     for(int i=0; i<user_input_edges.size();i++){
-		sort(user_input_edges[i].begin(), user_input_edges[i].end());//sort the user input data
-	}
-	sort(user_input_edges.begin(), user_input_edges.end());//sort the user input data
-	for(int k=0; k<bk_cstructure.size();k++){
-		sort(bk_cstructure[k].begin(), bk_cstructure[k].end());//sort the actual c-structure
-	}
-	sort(bk_cstructure.begin(), bk_cstructure.end());//sort the actual c structure vector
-	//If the two vectors are the same
-	if(user_input_edges == bk_cstructure){
-		is_cstructure = true;
-		
-	} 
-	return is_cstructure;
-
+        sort(user_input_edges[i].begin(), user_input_edges[i].end());//sort the user input data
+    }
+    sort(user_input_edges.begin(), user_input_edges.end());//sort the user input data
+    for(int k=0; k<bk_cstructure.size();k++){
+        sort(bk_cstructure[k].begin(), bk_cstructure[k].end());//sort the actual c-structure
+    }
+    sort(bk_cstructure.begin(), bk_cstructure.end());//sort the actual c structure vector
+    //If the two vectors are the same
+    if(user_input_edges == bk_cstructure){
+        is_cstructure = true;
+    } 
+    return is_cstructure;
 }
 
 /************************************************************
@@ -174,10 +169,10 @@ Dictionary of Variables:
 *************************************************************/
 
 void CreateSetofVertices(int num_vertices, vector<int> &vertices){
-	//for the number of vertices add i to the set of vertices
-	for(int i=0; i<num_vertices; i++){
-		vertices.push_back(i+1);//add a vertext to the set of vertices
-	}	
+    //for the number of vertices add i to the set of vertices
+    for(int i=0; i<num_vertices; i++){
+        vertices.push_back(i+1);//add a vertext to the set of vertices
+    }	
 }
 
 /*************************************************************
@@ -221,36 +216,33 @@ Dictionary of Variables:
 *************************************************************/
 
 int GetPivot(vector < pair <int,int> > &edges, vector <int> U,vector <int> P){
-	int u;
-	int highest_num_neighbors=0;
-	int best_vertex;
-	best_vertex = U[0];
-	//for each vertex in U
-	for (int i = 0; i<U.size(); i++){
-		int neighbor_count = 0;
-		//for each edge in the graph
-		for (int j = 0; j<edges.size(); j++){
-			//if the edge connects U[i] to another vertex
-			if (edges[j].first == U[i]||edges[j].second == U[i]){
-				//for each vertex in P
-				for(int v=0;v<P.size();v++){						
-					//if neighbor of U[i] is in P
-					if((edges[j].first != U[i] && edges[j].first == P[v])||(edges[j].second != U[i] && edges[j].second == P[v])){
-						neighbor_count++;
-					}
-				}
-					
-			}				
-		}	
-		//if neighbor_count of current vertex in U is greater than current hishest_num_neighbors
-		if (neighbor_count > highest_num_neighbors){
-			highest_num_neighbors = neighbor_count;
-			best_vertex = U[i];
-
-		}
-
-	}
-	return best_vertex;
+    int u;
+    int highest_num_neighbors=0;
+    int best_vertex;
+    best_vertex = U[0];
+    //for each vertex in U
+    for (int i = 0; i<U.size(); i++){
+        int neighbor_count = 0;
+        //for each edge in the graph
+        for (int j = 0; j<edges.size(); j++){
+            //if the edge connects U[i] to another vertex
+            if (edges[j].first == U[i]||edges[j].second == U[i]){
+                //for each vertex in P
+                for(int v=0;v<P.size();v++){
+                    //if neighbor of U[i] is in P
+                    if((edges[j].first != U[i] && edges[j].first == P[v])||(edges[j].second != U[i] && edges[j].second == P[v])){
+                        neighbor_count++;
+                    }
+                }
+            }
+        }
+        //if neighbor_count of current vertex in U is greater than current hishest_num_neighbors
+        if (neighbor_count > highest_num_neighbors){
+            highest_num_neighbors = neighbor_count;
+            best_vertex = U[i];
+        }
+    }
+    return best_vertex;
 }
 /*************************************************************
 Function: GetNeighbors
@@ -268,17 +260,16 @@ Dictionary of Variables:
    description: set that will contain all neighbors of vertex v    
 *************************************************************/
 
-void GetNeighbors(int v, vector < pair <int,int> > &edges, vector <int> &neighbors){	
-	for (int j = 0; j<edges.size(); j++){
-		if (edges[j].first == v){
-			neighbors.push_back(edges[j].second);					
-			
-		}				
-		else if(edges[j].second == v){
-			neighbors.push_back(edges[j].first);
-		}
-		else{}	
-	}	
+void GetNeighbors(int v, vector < pair <int,int> > &edges, vector <int> &neighbors){
+    for (int j = 0; j<edges.size(); j++){
+        if (edges[j].first == v){
+            neighbors.push_back(edges[j].second);
+        }
+        else if(edges[j].second == v){
+            neighbors.push_back(edges[j].first);
+        }
+        else{}	
+    }	
 }
 
 /*************************************************************
@@ -339,60 +330,60 @@ Dictionary of Variables:
 *************************************************************/
 
 void GetAllMaxCliques(vector< pair <int,int> > &edges, vector< vector <int> > &maximal_cliques, vector <int> R, vector <int> P, vector <int> X){
-	vector<int> U(100);
- 	vector<int>::iterator it;
-	vector <int> pivot_neighbors;
-	vector <int> p_union_x(100);
-	it = set_union(P.begin(),P.end(), X.begin(), X.end(), p_union_x.begin());
-	p_union_x.resize(it-p_union_x.begin());
-	//if p_union_x is empty
-        // then R is a maximal clique
-	if (p_union_x.size() == 0){//begin if
-		maximal_cliques.push_back(R);
-		return;
-	}//end if
-	else{//begin else	 
-		it = set_union(P.begin(), P.end(), X.begin(), X.end(), U.begin());
-		U.resize(it-U.begin());
-		int pivot = GetPivot(edges, U,P);//get the pivot vertex		
-		GetNeighbors(pivot, edges, pivot_neighbors);//get pivot vertex neighbors
-		vector <int> P_minus_nbrs(100);
-		it = set_difference(P.begin(),P.end(), pivot_neighbors.begin(), pivot_neighbors.end(), P_minus_nbrs.begin());
-		P_minus_nbrs.resize(it-P_minus_nbrs.begin());		
-		//for all members of P-nbrs(pivot)
-		for(int y=0;y<P_minus_nbrs.size();y++){//begin for
-			vector <int> new_P(100);
-			vector <int> new_R;
-			vector <int> new_X;
-			vector <int> neighbors_of_v;
-			GetNeighbors(P_minus_nbrs[y],edges, neighbors_of_v);
-			//for all member of R
-			for(int f=0;f<R.size();f++)
-			{//begin for
-				new_R.push_back(R[f]);
-			}//end for
-			//for all members of X
-			for(int g=0;g<X.size();g++){//begin for
-				new_X.push_back(X[g]);
-			}//end for
-			it = set_intersection(P.begin(),P.end(),neighbors_of_v.begin(),neighbors_of_v.end(), new_P.begin());
-			new_P.resize(it-new_P.begin());
-			new_R.push_back(P_minus_nbrs[y]);
-			it = set_intersection(X.begin(), X.end(), neighbors_of_v.begin(),neighbors_of_v.end(), new_X.begin());
-			new_X.resize(it-new_X.begin());
-			GetAllMaxCliques(edges, maximal_cliques, new_R, new_P, new_X);//recursive call
-			for(int r = 0; r<P.size();r++){//begin for
-				if (P[r] == P_minus_nbrs[y]){//begin if
-					P.erase(P.begin()+r);
-				}//end if
-			}//end if
-			X.push_back(P_minus_nbrs[y]);
-			
-		}//end for
-	}//end else
-	return;
+    vector<int> U(100);
+    vector<int>::iterator it;
+    vector <int> pivot_neighbors;
+    vector <int> p_union_x(100);
+    it = set_union(P.begin(),P.end(), X.begin(), X.end(), p_union_x.begin());
+    p_union_x.resize(it-p_union_x.begin());
+    //if p_union_x is empty
+    // then R is a maximal clique
+    if (p_union_x.size() == 0){//begin if
+        maximal_cliques.push_back(R);
+        return;
+    }//end if
+    else{//begin else
+        it = set_union(P.begin(), P.end(), X.begin(), X.end(), U.begin());
+        U.resize(it-U.begin());
+        int pivot = GetPivot(edges, U,P);//get the pivot vertex
+        GetNeighbors(pivot, edges, pivot_neighbors);//get pivot vertex neighbors
+        vector <int> P_minus_nbrs(100);
+        it = set_difference(P.begin(),P.end(), pivot_neighbors.begin(), pivot_neighbors.end(), P_minus_nbrs.begin());
+        P_minus_nbrs.resize(it-P_minus_nbrs.begin());
+        //for all members of P-nbrs(pivot)
+        for(int y=0;y<P_minus_nbrs.size();y++){//begin for
+            vector <int> new_P(100);
+            vector <int> new_R;
+            vector <int> new_X;
+            vector <int> neighbors_of_v;
+            GetNeighbors(P_minus_nbrs[y],edges, neighbors_of_v);
+            //for all member of R
+            for(int f=0;f<R.size();f++)
+            {//begin for
+                new_R.push_back(R[f]);
+            }//end for
+            //for all members of X
+            for(int g=0;g<X.size();g++){//begin for
+                new_X.push_back(X[g]);
+            }//end for
+            it = set_intersection(P.begin(),P.end(),neighbors_of_v.begin(),neighbors_of_v.end(), new_P.begin());
+            new_P.resize(it-new_P.begin());
+            new_R.push_back(P_minus_nbrs[y]);
+            it = set_intersection(X.begin(), X.end(), neighbors_of_v.begin(),neighbors_of_v.end(), new_X.begin());
+            new_X.resize(it-new_X.begin());
+            GetAllMaxCliques(edges, maximal_cliques, new_R, new_P, new_X);//recursive call
+            for(int r = 0; r<P.size();r++){//begin for
+                if (P[r] == P_minus_nbrs[y]){//begin if
+                    P.erase(P.begin()+r);
+                }//end if
+            }//end if
+            X.push_back(P_minus_nbrs[y]);
+            
+        }//end for
+    }//end else
+    return;
 }
-	
+
 
 
 

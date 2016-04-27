@@ -35,8 +35,15 @@ int main(int argc, const char * argv[]) {
     bool same_cstructure = CheckCStructure(edge_vector, maximal_cliques);
     //print maximal cliques
     print_maximal_cliques(maximal_cliques);
-	cout<<same_cstructure<<endl;
+    if (same_cstructure) {
+        cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
+        cout<<"is correct for this graph."<<endl;
+    }
+    else if (!same_cstructure){
+        cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
+        cout<<"is NOT correct for this graph."<<endl;
+    }
     //call the ac_procedure
-    ac_procedure(primal_edge_vector, maximal_cliques, membership_array);
+    ac_procedure(maximal_cliques, membership_array);
     
 }

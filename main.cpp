@@ -26,7 +26,7 @@ int main(int argc, const char * argv[]) {
     //call print_matrix - print the membership array in matrix form
     print_matrix(membership_array);
     //call print_primal_edge_vector - print the vector containing the edges in the primal graph
-    print_primal_edge_vector(primal_edge_vector);
+    //print_primal_edge_vector(primal_edge_vector);
     //call print_edge_vector - print the vector containing each hyperedge line by line
     print_edge_vector(edge_vector);
     //get all the maximal cliques for the given graph

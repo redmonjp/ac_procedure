@@ -257,7 +257,7 @@ void print_edge_vector(vector< vector<int> > &edge_vector){
     vector<int>::iterator it;
     vector<int>edge;
     
-    cout<<endl<<"Hyperedges"<<endl;
+    cout<<endl<<"User Input Cliques"<<endl;
     //print the hyperedges we found!
     for (int i=0; i<edge_vector.size(); i++) {
         edge = edge_vector[i];

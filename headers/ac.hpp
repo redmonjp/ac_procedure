@@ -110,6 +110,7 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
     //resize it and set it all to false
     membership_array_copy.resize(membership_array.size(), vector<bool>(membership_array.size(), false));
     
+    cout<<endl<<"Starting AC-procedure";
     //loop for each possible entry in the array
     for (int i=1; i<membership_array.size(); i++) {
         for (int j=1; j<membership_array.size(); j++) {
@@ -126,7 +127,7 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                 //keep track of how many edges we have added
                 iterations++;
                 //what spot are we going to add
-                cout<<endl<<"Edge #"<<iterations<<" will add edge ("<<i<<","<<j<<")";
+                cout<<endl<<"Adding in edge #"<<iterations<<" which is - '("<<i<<","<<j<<")'";
                 //keep the (x,y) coordinate that is being added so it can be taken out
                 new_edge = make_pair(i, j);
                 //push the two numbers onto the edge vector
@@ -153,6 +154,7 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                     set_intersection(edge.begin(), edge.end(), clique.begin(), clique.end(), back_inserter(buffer));
                     //if the intersection is not empty that means that the edge interacts with the clique in someway
                     if (!(buffer.empty())) {
+                        /*comment the cout comments
                         //print the elments in the intersection
                         cout<<"There is something in the intersection - '";
                         print_clique(buffer);
@@ -161,15 +163,18 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                         cout<<"The solution will involve clique:'";
                         print_clique(clique);
                         cout<<"'"<<endl;
+                         */
                         //we need to begin computing the final edge -
                         //if there is nothing in the final edge yet we can just set the final
                         //edge to the first clique that is involved in the aggregate
                         //this is because we can do the intersection of the null set
                         if (final_edge.empty()) {
                             final_edge = clique;
+                            /*comment the cout comments
                             cout<<"Final edge is empty - lets put '";
                             print_clique(final_edge);
                             cout<<"' in there!"<<endl;
+                            */
                         }
                         //if there is something is the edge we need to take the intersection
                         //of what is already there with whatever we have as a clique
@@ -184,10 +189,12 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                             //find the intersection between the clique we are working with and the
                             //current data in the buffer that is our working final edge
                             set_intersection(clique.begin(), clique.end(), buffer.begin(), buffer.end(), back_inserter(final_edge));
+                            /*comment the cout comments
                             //print what we have as an intersection
                             cout<<"So we took the intersection and now we are left with - '";
                             print_clique(final_edge);
                             cout<<"' as our intersection"<<endl;
+                            */
                         }
                     }
                 }
@@ -203,13 +210,15 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                 sort(buffer.begin(), buffer.end());
                 //find the union of our edge and the intersection of each edge involved - this gives the new edge
                 set_union(edge.begin(), edge.end(), buffer.begin(), buffer.end(), back_inserter(final_edge));
+                /*comment the cout comments
                 //print out what the new edge is
                 cout<<"We took the union, what is the new edge we have? - '";
                 print_clique(final_edge);
                 cout<<"'"<<endl;
+                */
                 //sort the final edge for use with includes
                 sort(final_edge.begin(), final_edge.end());
-                //
+                //counter for how many elements we have popped off
                 int z=0;
                 //check to see if any of the old edges are a subset of the new edge
                 for (int k=0; k<maximal_cliques.size(); k++) {
@@ -219,11 +228,13 @@ void ac_procedure(vector< vector <int> > maximal_cliques, vector<vector<bool> > 
                     if (includes(final_edge.begin(), final_edge.end(), clique.begin(), clique.end())) {
                         //increment i each time we are going to erase something
                         //when we erase an element it needs to be accounted for
+                        /*comment the cout comments
                         cout<<"The edge '";
                         print_clique(clique);
                         cout<<"' is a subset of '";
                         print_clique(final_edge);
                         cout<<"' so, exclude it"<<endl;
+                        */
                         //aggregates is a copy of the original maximal cliques that we started with
                         //erase the corresponding element in aggregates from the original maximal
                         //cliques - this is just so that we can display the new aggregates and not

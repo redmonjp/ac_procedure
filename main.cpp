@@ -1,5 +1,6 @@
 #include "headers/mce_setup.hpp"
 #include "headers/ac.hpp"
+#include "headers/rc.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -21,6 +22,7 @@ int main(int argc, const char * argv[]) {
     vector < int > R;
     vector < int > X;
     vector< vector <int> > maximal_cliques;
+	vector< vector <vector <int> > > refinements;
     //call read_file - read in the description file and update membership array
     read_file(membership_array, edge_vector, primal_edge_vector, vertices, argc, argv);
     //call print_matrix - print the membership array in matrix form
@@ -45,5 +47,6 @@ int main(int argc, const char * argv[]) {
     }
     //call the ac_procedure
     ac_procedure(maximal_cliques, membership_array);
-    
+	//call rc_procedure
+    GetRefinements(membership_array, maximal_cliques, refinements);
 }

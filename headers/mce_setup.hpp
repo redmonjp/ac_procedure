@@ -290,7 +290,8 @@ void print_primal_edge_vector(vector< pair<int, int> > &primal_edge_vector){
 void print_maximal_cliques(vector< vector<int> > &maximal_cliques){
     vector<int>::iterator it;
     vector<int>edge;
-    
+    //sort the edges!
+    sort(maximal_cliques.begin(), maximal_cliques.end());
     cout<<endl<<"Maximal Cliques in Graph"<<endl;
     //print the hyperedges we found!
     for (int i=0; i<maximal_cliques.size(); i++) {

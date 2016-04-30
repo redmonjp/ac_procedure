@@ -79,29 +79,25 @@ Dictionary of Variables:
     is_subset is changed to true. This function returns the opposite
     value of is_subset so that false is returned if clique_to_check is a 
     subset and true if it is not a subset.
-   one_int_set-
-	type: bool
-	description: True when one value in clique_to_check is found in
-	some member of cstructure. False, otherwise.
+   num_in_set-
+	type: int
+	description: Keeps track of how many members of the possible
+	maximal clique are also in a clique already in the new c-structure.
 *************************************************************/
 
 
 bool CheckNewClique(vector <int> clique_to_check, vector <vector <int> > cstructure){
 	bool is_subset = false; 
-	bool one_in_set;
 	int i=0;
+	int num_in_set;
 	while(!is_subset && i<cstructure.size()){//begin while
-		one_in_set =false;
+		num_in_set = 0;
 		for(int j=0;j<cstructure[i].size();j++){//begin for
 			for(int k=0;k<clique_to_check.size();k++){//begin for
-				if(cstructure[i][j] == clique_to_check[k] && one_in_set==false && clique_to_check.size()>1){//begin if
-					one_in_set = true;//one member in clique_to_check is in an existing maximal clique
+				if(cstructure[i][j] == clique_to_check[k] && num_in_set!=clique_to_check.size()){//begin if
+					num_in_set++;
 				}//end if
-				else if(cstructure[i][j]==clique_to_check[k] && clique_to_check.size()==1)
-				{//begin else if
-						is_subset=true;//clique_to_check is a subset 
-				}//end else if 
-				else if(cstructure[i][j] == clique_to_check[k] &&  one_in_set == true){//begin else if
+				if(num_in_set == clique_to_check.size()){//begin else if
 					is_subset=true;//clique_to_check is a subset
 				}//end else if
 			}//end for
@@ -187,8 +183,6 @@ void GetRefinements(vector <vector <bool> > primal_graph, vector <vector <int> >
 	vector<vector <bool> > primal_graph_copy;
 	primal_graph_copy.resize(primal_graph.size(), vector<bool>(primal_graph.size(), true));//initialize primal_graph_copy
 	vector<int>::iterator it;
-	
-	//cout<<primal_graph.size()<<endl;
 	
 	for(int x=0; x<primal_graph.size();x++){//begin for
 		for(int y=0; y<primal_graph[x].size();y++){//begin for

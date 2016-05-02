@@ -22,7 +22,7 @@ int main(int argc, const char * argv[]) {
     vector < int > R;
     vector < int > X;
     vector< vector <int> > maximal_cliques;
-	vector< vector <vector <int> > > refinements;
+    vector< vector <vector <int> > > refinements;
     //call read_file - read in the description file and update membership array
     read_file(membership_array, edge_vector, primal_edge_vector, vertices, argc, argv);
     //call print_matrix - print the membership array in matrix form
@@ -37,6 +37,7 @@ int main(int argc, const char * argv[]) {
     bool same_cstructure = CheckCStructure(edge_vector, maximal_cliques);
     //print maximal cliques
     print_maximal_cliques(maximal_cliques);
+    //what is the result of the bk_algorithm
     if (same_cstructure) {
         cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
         cout<<"is correct for this graph."<<endl;
@@ -47,6 +48,6 @@ int main(int argc, const char * argv[]) {
     }
     //call the ac_procedure
     ac_procedure(maximal_cliques, membership_array);
-	//call rc_procedure
+    //call rc_procedure
     GetRefinements(membership_array, maximal_cliques, refinements);
 }

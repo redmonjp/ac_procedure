@@ -1,99 +1,99 @@
 /*********************************************
-Bk.hpp
-version 1.0
-Language: C++
-Written by Paul Ziarko
-Teammate: John Redmond
-Capstone 2016
-This header file contains an implementation of
-the second version of the bron-kerbosch(Bk) algorithm.
-
-Description of Functions:
-CheckCStructure: 
-    Input:
-      user_cstructure- 
-       type: vector <vector <int> >
-       description: set of hyperedges/edges input by user
-      bk_cstructure-
-       type: vector <vector <int> >
-       description: set of maximal cliques (c-structure)
-       output as a result of running get_all_maxcliques 
-       function.	  
-    Output: 
-       is_cstruture-
-         type: bool
-         description: boolean variable with following values-
-         0-edges input by user is not a c-structure for corresponding
-           primal graph.
-         1-edges input by user are a c-structure for corresponding 
-           primal graph.
-
-CreateSetofVertices:
-    Input:
-      num_vertices- 
-       type: int
-       description: number of vertices given by user
-      vertices-
-       type: vector <int>
-       description: Empty vector that will contain all
-                    vertices in a graph.	  
-    Output:
-      vertices-
-       type: vector<int>  
-       description: set of vertices for graph based on 
-       num_vertices.
-
-GetPivot:
-    Input:
-      edges-
-       type: vector<pair <int,int> >
-       description: set of edges in the primal graph
-       corresponding to the graph data input by the user.
-      U-
-       type: vector <int>
-       description: set containing possible pivot vertices
-      P-
-       type: vector <int>
-       description: set containing vertices adjacent to every vertex
-       currently in R, the set containing a possible maximal clique.
-     
-    Output:
-      best_vertex-
-       type: int
-       description: pivot vertex to be used for bk-algorithm   
-GetNeighbors:
-    Input:
-      u-
-       type: int
-       description: vertex to find neighbors of
-      edges-
-       type: vector<pair <int,int> >
-       description: set of edges in primal graph
-      neighbors-
-       type: vector <int>
-       description: set that will contain neighbors of vertex u.
-    output: 
-      set of all neighbors of vertex u
-
-GetAllMaxCliques:
-    Input:
-      edges-
-       type: vector < pair <int, int> >
-       description: set of edges for given primal graph
-      maximal_cliques-
-       type: vector< vector <int> >
-       description: empty vector that will contain all maximal cliques in
-       primal graph.
-      R-
-       type: vector <int>
-       description: initially empty set
-      P-
-       type: vector <int>
-       description: initially contains all vertices in graph
-      X-
-       type: vector <int>
-       description: initially empty set
-*********************************************/
+ Bk.hpp
+ version 1.0
+ Language: C++
+ Written by Paul Ziarko
+ Teammate: John Redmond
+ Capstone 2016
+ This header file contains an implementation of
+ the second version of the bron-kerbosch(Bk) algorithm.
+ 
+ Description of Functions:
+ CheckCStructure:
+ Input:
+ user_cstructure-
+ type: vector <vector <int> >
+ description: set of hyperedges/edges input by user
+ bk_cstructure-
+ type: vector <vector <int> >
+ description: set of maximal cliques (c-structure)
+ output as a result of running get_all_maxcliques
+ function.
+ Output:
+ is_cstruture-
+ type: bool
+ description: boolean variable with following values-
+ 0-edges input by user is not a c-structure for corresponding
+ primal graph.
+ 1-edges input by user are a c-structure for corresponding
+ primal graph.
+ 
+ CreateSetofVertices:
+ Input:
+ num_vertices-
+ type: int
+ description: number of vertices given by user
+ vertices-
+ type: vector <int>
+ description: Empty vector that will contain all
+ vertices in a graph.
+ Output:
+ vertices-
+ type: vector<int>
+ description: set of vertices for graph based on
+ num_vertices.
+ 
+ GetPivot:
+ Input:
+ edges-
+ type: vector<pair <int,int> >
+ description: set of edges in the primal graph
+ corresponding to the graph data input by the user.
+ U-
+ type: vector <int>
+ description: set containing possible pivot vertices
+ P-
+ type: vector <int>
+ description: set containing vertices adjacent to every vertex
+ currently in R, the set containing a possible maximal clique.
+ 
+ Output:
+ best_vertex-
+ type: int
+ description: pivot vertex to be used for bk-algorithm
+ GetNeighbors:
+ Input:
+ u-
+ type: int
+ description: vertex to find neighbors of
+ edges-
+ type: vector<pair <int,int> >
+ description: set of edges in primal graph
+ neighbors-
+ type: vector <int>
+ description: set that will contain neighbors of vertex u.
+ output:
+ set of all neighbors of vertex u
+ 
+ GetAllMaxCliques:
+ Input:
+ edges-
+ type: vector < pair <int, int> >
+ description: set of edges for given primal graph
+ maximal_cliques-
+ type: vector< vector <int> >
+ description: empty vector that will contain all maximal cliques in
+ primal graph.
+ R-
+ type: vector <int>
+ description: initially empty set
+ P-
+ type: vector <int>
+ description: initially contains all vertices in graph
+ X-
+ type: vector <int>
+ description: initially empty set
+ *********************************************/
 
 #include <stdlib.h>
 #include <algorithm>
@@ -105,37 +105,37 @@ GetAllMaxCliques:
 using namespace std;
 
 /**************************************************************
-Function: CheckCStructure
-Description: This function will be used to compare 
-	     two c_structures to see if they are the 
-             same. This could be used to compare a 
-             set of cliques given by the user to the 
-             set of maximal cliques generated by the 
-             GetAllMaxCliques function to find out if 
-             the set of cliques input by the user is the 
-             c-structure for the primal graph that corresponds
-             to the graph information given by the user.
-	     After being called and receiving the input, 
-             a boolean is created and set to false. Then, the two 
-             vectors sent to the function by the user are sorted 
-             and compared. If they are the same, the boolean 
-             variable is changed to true and returned as output. If 
-             they are not the same, the value of the boolean remains 
-             false and is returned.
-Dictionary of Variables:
-  user_input_edges-
-    type: vector <vector <int> >
-    Description: input to function, contains edges given by user in
-    initial input.
-  bk_cstructure- 
-    type: vector <vector <int> >
-    Description:input to function, actual c-structure a user may want 
-    to compare their input to.
-  is_cstructure-
-    type: boolean
-    Description: Intialized to false, stays false if vectors input 
-    by user are different, changes to true if they are the same.
-*********************************************************************/
+ Function: CheckCStructure
+ Description: This function will be used to compare
+ two c_structures to see if they are the
+ same. This could be used to compare a
+ set of cliques given by the user to the
+ set of maximal cliques generated by the
+ GetAllMaxCliques function to find out if
+ the set of cliques input by the user is the
+ c-structure for the primal graph that corresponds
+ to the graph information given by the user.
+ After being called and receiving the input,
+ a boolean is created and set to false. Then, the two
+ vectors sent to the function by the user are sorted
+ and compared. If they are the same, the boolean
+ variable is changed to true and returned as output. If
+ they are not the same, the value of the boolean remains
+ false and is returned.
+ Dictionary of Variables:
+ user_input_edges-
+ type: vector <vector <int> >
+ Description: input to function, contains edges given by user in
+ initial input.
+ bk_cstructure-
+ type: vector <vector <int> >
+ Description:input to function, actual c-structure a user may want
+ to compare their input to.
+ is_cstructure-
+ type: boolean
+ Description: Intialized to false, stays false if vectors input
+ by user are different, changes to true if they are the same.
+ *********************************************************************/
 bool CheckCStructure(vector < vector <int> > user_input_edges, vector < vector <int> > &bk_cstructure){
     bool is_cstructure = false; //is the user input a c structure?
     
@@ -147,75 +147,75 @@ bool CheckCStructure(vector < vector <int> > user_input_edges, vector < vector <
         sort(bk_cstructure[k].begin(), bk_cstructure[k].end());//sort the actual c-structure
     }
     sort(bk_cstructure.begin(), bk_cstructure.end());//sort the actual c structure vector
-     //If the two vectors are the same
+    //If the two vectors are the same
     if(user_input_edges == bk_cstructure){
         is_cstructure = true;
-    } 
+    }
     return is_cstructure;
 }
 
 /************************************************************
-Function: CreateSetofVertices
-Description: This function takes as input the number of vertices
-             in the graph and an empty vector that will contain 
-             the set of vertices in the graph.It will output
-             a vector that contains the set of all vertices in 
-             the primal graph.
-Dictionary of Variables:
-  num_vertices-
-    type: int
-    description: input to function, number of vertices in graph
-  vertices-
-    type: vector<int>
-    description: will contain set of all vertices in graph.
-*************************************************************/
+ Function: CreateSetofVertices
+ Description: This function takes as input the number of vertices
+ in the graph and an empty vector that will contain
+ the set of vertices in the graph.It will output
+ a vector that contains the set of all vertices in
+ the primal graph.
+ Dictionary of Variables:
+ num_vertices-
+ type: int
+ description: input to function, number of vertices in graph
+ vertices-
+ type: vector<int>
+ description: will contain set of all vertices in graph.
+ *************************************************************/
 
 void CreateSetofVertices(int num_vertices, vector<int> &vertices){
     //for the number of vertices add i to the set of vertices
     for(int i=0; i<num_vertices; i++){
         vertices.push_back(i+1);//add a vertext to the set of vertices
-    }	
+    }
 }
 
 /*************************************************************
-Function: GetPivot
-Description: This function takes as input the set of all edges
-             in the graph, the set of all possible pivot vertices,
-             and the set P (set of vertices adjacent to every vertex
-             in R). Then using for loops and inequalities it determines
-             which vertex in U is best suited to be the pivot vertex.
-             The pivot vertex is the vertex in U with the most neighbors
-             in P. If two or more vertices in U have the most neighbors 
-             in P, the pivot vertex is the vertex at a lower index than 
-             the other vertices with the most neighbors.
-
-Dictionary of Variables:
-  edges-
-    type: vector <pair <int,int> >
-    description: input to function, set of edges in graph
-  U-
-    type: vector <int>
-    description: input to function, set of possible pivot vertices
-  P-
-   type: vector <int>
-   description: input to function, set of vertices that are adjacent to 
-   every vertex in R. For any vertex in U to be the pivot it must have
-   have the most neighbors in P
-  u-
-   type: int
-   description: possible pivot vertex
-  highest_num_neighbors-
-   type: int
-   description: used to keep track of the vertex in U with the 
-   highest number of neighbors in P
-  best_vertex-
-   type: int
-   description: vertex with the highest number of neighbors in P
-  neighbor_count-
-    type: int
-    description: used to count the number of neighbors in P of each
-    vertex
-*************************************************************/
+ Function: GetPivot
+ Description: This function takes as input the set of all edges
+ in the graph, the set of all possible pivot vertices,
+ and the set P (set of vertices adjacent to every vertex
+ in R). Then using for loops and inequalities it determines
+ which vertex in U is best suited to be the pivot vertex.
+ The pivot vertex is the vertex in U with the most neighbors
+ in P. If two or more vertices in U have the most neighbors
+ in P, the pivot vertex is the vertex at a lower index than
+ the other vertices with the most neighbors.
+ 
+ Dictionary of Variables:
+ edges-
+ type: vector <pair <int,int> >
+ description: input to function, set of edges in graph
+ U-
+ type: vector <int>
+ description: input to function, set of possible pivot vertices
+ P-
+ type: vector <int>
+ description: input to function, set of vertices that are adjacent to
+ every vertex in R. For any vertex in U to be the pivot it must have
+ have the most neighbors in P
+ u-
+ type: int
+ description: possible pivot vertex
+ highest_num_neighbors-
+ type: int
+ description: used to keep track of the vertex in U with the
+ highest number of neighbors in P
+ best_vertex-
+ type: int
+ description: vertex with the highest number of neighbors in P
+ neighbor_count-
+ type: int
+ description: used to count the number of neighbors in P of each
+ vertex
+ *************************************************************/
 
 int GetPivot(vector < pair <int,int> > &edges, vector <int> U,vector <int> P){
     int highest_num_neighbors=0;
@@ -246,20 +246,20 @@ int GetPivot(vector < pair <int,int> > &edges, vector <int> U,vector <int> P){
     return best_vertex;
 }
 /*************************************************************
-Function: GetNeighbors
-Description: This function gives all the neighbors of a given
-             vertex in the given graph.
-Dictionary of Variables:
-  v-
-   type: int
-   description: input to function, vertex to find the neighbor of
-  edges-
-   type: vector <pair <int,int> >
-   description: input to function, set of edges in primal graph
-  neighbors-
-   type: vector <int>
-   description: set that will contain all neighbors of vertex v    
-*************************************************************/
+ Function: GetNeighbors
+ Description: This function gives all the neighbors of a given
+ vertex in the given graph.
+ Dictionary of Variables:
+ v-
+ type: int
+ description: input to function, vertex to find the neighbor of
+ edges-
+ type: vector <pair <int,int> >
+ description: input to function, set of edges in primal graph
+ neighbors-
+ type: vector <int>
+ description: set that will contain all neighbors of vertex v
+ *************************************************************/
 
 void GetNeighbors(int v, vector < pair <int,int> > &edges, vector <int> &neighbors){
     for (int j = 0; j<edges.size(); j++){
@@ -269,66 +269,66 @@ void GetNeighbors(int v, vector < pair <int,int> > &edges, vector <int> &neighbo
         else if(edges[j].second == v){
             neighbors.push_back(edges[j].first);
         }
-        else{}	
-    }	
+        else{}
+    }
 }
 
 /*************************************************************
-Function: GetAllMaxCliques
-Description: This function is the main function in the implementation
-             of the Bk-algorithm. It takes as input graph data(set of
-             vertices, set of edges), a set R (set containing a possible
-             maximal clique), a set P (set containing vertices adjacent to 
-             every vertex in R), and a set X (set containing nodes already 
-             processed). It returns a set containing all maximal cliques
-             for a given primal graph (C-structure).
-Dictionary of Variables:
-  edges-
-    type: vector <pair <int,int> >
-    description: input to function, set of edges in graph
-  maximal_cliques-
-   type: vector<vector <int> >
-   description: will contain all maximal cliques for primal graph
-  R-
-   type: vector<int>
-   description: input to function, contains a possible maximal clique
-  P-
-   type: vector <int>
-   description: input to function, set of vertices adjacent to every
-   vertex in R.
-  X-
-   type: vector <int>
-   description: input to function, set of nodes already processed
-   in current call of function.
-  U- 
-   type: vector<int>
-   description: set of possible pivot vertices
-  pivot_neighbors-
-   type: vector <int>
-   description: neighbors of pivot vertex
-  p_union_x-
-   type: vector <int>
-   description: union of P and X, used to see if R is a maximal
-   clique
+ Function: GetAllMaxCliques
+ Description: This function is the main function in the implementation
+ of the Bk-algorithm. It takes as input graph data(set of
+ vertices, set of edges), a set R (set containing a possible
+ maximal clique), a set P (set containing vertices adjacent to
+ every vertex in R), and a set X (set containing nodes already
+ processed). It returns a set containing all maximal cliques
+ for a given primal graph (C-structure).
+ Dictionary of Variables:
+ edges-
+ type: vector <pair <int,int> >
+ description: input to function, set of edges in graph
+ maximal_cliques-
+ type: vector<vector <int> >
+ description: will contain all maximal cliques for primal graph
+ R-
+ type: vector<int>
+ description: input to function, contains a possible maximal clique
+ P-
+ type: vector <int>
+ description: input to function, set of vertices adjacent to every
+ vertex in R.
+ X-
+ type: vector <int>
+ description: input to function, set of nodes already processed
+ in current call of function.
+ U-
+ type: vector<int>
+ description: set of possible pivot vertices
+ pivot_neighbors-
+ type: vector <int>
+ description: neighbors of pivot vertex
+ p_union_x-
+ type: vector <int>
+ description: union of P and X, used to see if R is a maximal
+ clique
  pivot-
-  type: int
-  description: pivot vertex
+ type: int
+ description: pivot vertex
  P_minus_nbrs-
-  type: vector<int>
-  description: set difference of P and pivot_neighbors
+ type: vector<int>
+ description: set difference of P and pivot_neighbors
  new_P-
-  type: vector <int>
-  description: value of P sent to next call of GetAllMaxCliques
+ type: vector <int>
+ description: value of P sent to next call of GetAllMaxCliques
  new_R-
-  type: vector <int>
-  description: value of R sent to next call of GetAllMaxCliques
+ type: vector <int>
+ description: value of R sent to next call of GetAllMaxCliques
  new_X-
-  type: vector <int>
-  description: value of X sent to next call of GetAllMaxCliques
+ type: vector <int>
+ description: value of X sent to next call of GetAllMaxCliques
  neighbors_of_v-
-  type: vector <int>
-  description: neighbors of vertex v
-*************************************************************/
+ type: vector <int>
+ description: neighbors of vertex v
+ *************************************************************/
 
 void GetAllMaxCliques(vector< pair <int,int> > &edges, vector< vector <int> > &maximal_cliques, vector <int> R, vector <int> P, vector <int> X){
     vector<int> U(100);

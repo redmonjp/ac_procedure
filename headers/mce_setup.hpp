@@ -20,7 +20,7 @@ using namespace std;
  edge in the graph. The function reads the given file in,
  line by line, and then pushes each line onto the pairs vector.
  The first element of the vector is popped off and used to create
- the size of the membership_array. From that point each edge in 
+ the size of the membership_array. From that point each edge in
  pairs vector is manipulated and packed into the correct data
  structures
  
@@ -39,9 +39,9 @@ using namespace std;
  in the graph description file
  vertices-
  type:vector<int>
- Description: input to function, contains the number of vertices 
+ Description: input to function, contains the number of vertices
  i,j,k,l,z,start,x,y -
- type:int 
+ type:int
  Description: local to function, counters in some manner
  num_of_vertices
  type:int
@@ -54,7 +54,7 @@ using namespace std;
  pair_exists
  type:bool
  Description: local to function, tells weather the inverse of the pair
- exists - prevents duplicates 
+ exists - prevents duplicates
  edge-
  type:vector<int>
  Description: local to function, contains the vector of the single edge
@@ -72,11 +72,11 @@ using namespace std;
  Description: local to function, used to read in the file data
  convert-
  type:stringstream
- Description: local to function, stringstream variable used as the 
- buffer to convert 
+ Description: local to function, stringstream variable used as the
+ buffer to convert
  graph_str-
  type:str
- Description: local to function, used to hold the single string that 
+ Description: local to function, used to hold the single string that
  we are working with
  *********************************************************************/
 

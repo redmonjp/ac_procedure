@@ -11,6 +11,7 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
+	vector< vector <vector <int> > > refinements;
     //vector that will hold the edges in the hypergraph
     vector<vector <int> >edge_vector;
     //vector to hold the pairs of the primal graph
@@ -22,32 +23,64 @@ int main(int argc, const char * argv[]) {
     vector < int > R;
     vector < int > X;
     vector< vector <int> > maximal_cliques;
-    vector< vector <vector <int> > > refinements;
+	char y_or_n;
     //call read_file - read in the description file and update membership array
     read_file(membership_array, edge_vector, primal_edge_vector, vertices, argc, argv);
     //call print_matrix - print the membership array in matrix form
-    print_matrix(membership_array);
+	cout<<"Do you want to print out the adjacency matrix for the graph data you input? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y'){		
+		print_matrix(membership_array);
+	}
     //call print_primal_edge_vector - print the vector containing the edges in the primal graph
-    //print_primal_edge_vector(primal_edge_vector);
+	cout<<"Would you like to print out the set of primal edges for the graph data you input? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+		print_primal_edge_vector(primal_edge_vector);
+	}
     //call print_edge_vector - print the vector containing each hyperedge line by line
-    print_edge_vector(edge_vector);
-    //get all the maximal cliques for the given graph
-    GetAllMaxCliques(primal_edge_vector, maximal_cliques, R,vertices, X );
-    //check to see if they are the same
-    bool same_cstructure = CheckCStructure(edge_vector, maximal_cliques);
-    //print maximal cliques
-    print_maximal_cliques(maximal_cliques);
-    //what is the result of the bk_algorithm
-    if (same_cstructure) {
-        cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
-        cout<<"is correct for this graph."<<endl;
+	cout<<"Would you like to print out the set of edges as they were in the input file? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+		print_edge_vector(edge_vector);
     }
-    else if (!same_cstructure){
-        cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
-        cout<<"is NOT correct for this graph."<<endl;
-    }
-    //call the ac_procedure
-    ac_procedure(maximal_cliques, membership_array);
-    //call rc_procedure
-    GetRefinements(membership_array, maximal_cliques, refinements);
+	cout<<"Would you like to find the maximal cliques for the graph you input? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+		//get all the maximal cliques for the given graph
+		GetAllMaxCliques(primal_edge_vector, maximal_cliques, R,vertices, X );
+		//print maximal cliques
+		print_maximal_cliques(maximal_cliques);
+	cout<<"Would you like to compare the cliques you input with the set of maximal cliques? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+	//check to see if they are the same
+		bool same_cstructure = CheckCStructure(edge_vector, maximal_cliques);
+		if (same_cstructure) {
+			cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
+			cout<<"is correct for this graph."<<endl;
+		}
+		else if (!same_cstructure){
+			cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
+			cout<<"is NOT correct for this graph."<<endl;
+		}
+	}
+	}	
+	cout<<"Would you like to find all immediate aggregates of the graph? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+		//call the ac_procedure
+		ac_procedure(maximal_cliques, membership_array);
+	}
+	cout<<"Would you like to find all refinements of the graph? (Y or N): ";
+	cin>>y_or_n;
+	if(y_or_n == 'Y' ||y_or_n == 'y')		
+	{
+		GetRefinements(membership_array, maximal_cliques, refinements);
+	}
 }

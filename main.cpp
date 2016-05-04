@@ -81,6 +81,6 @@ int main(int argc, const char * argv[]) {
 	cin>>y_or_n;
 	if(y_or_n == 'Y' ||y_or_n == 'y')		
 	{
-		GetRefinements(membership_array, maximal_cliques, refinements);
+		GetRefinements(membership_array, edge_vector, refinements);
 	}
 }

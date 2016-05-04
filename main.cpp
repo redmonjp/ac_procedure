@@ -67,6 +67,7 @@ int main(int argc, const char * argv[]) {
 		else if (!same_cstructure){
 			cout<<endl<<"The bk_algorithm has returned that the set of maximal cliques provided ";
 			cout<<"is NOT correct for this graph."<<endl;
+			edge_vector = maximal_cliques;
 		}
 	}
 	}	
@@ -75,7 +76,7 @@ int main(int argc, const char * argv[]) {
 	if(y_or_n == 'Y' ||y_or_n == 'y')		
 	{
 		//call the ac_procedure
-		ac_procedure(maximal_cliques, membership_array);
+		ac_procedure(edge_vector, membership_array);
 	}
 	cout<<"Would you like to find all refinements of the graph? (Y or N): ";
 	cin>>y_or_n;
